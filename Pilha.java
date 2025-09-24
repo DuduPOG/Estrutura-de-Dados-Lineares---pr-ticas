@@ -18,10 +18,20 @@ public interface Pilha {
 
     public boolean isEmpty();
 
-    public Object top() throws PilhaVaziaExcecao;
+    public boolean isEmpty_v();
 
-    public void push(Object o);
+    public boolean isEmpty_p();
 
-    public Object pop() throws PilhaVaziaExcecao;
+    public Object top_v() throws PilhaVaziaExcecao;
+
+    public Object top_p() throws PilhaVaziaExcecao;
+
+    public void push_v(Object o);
+
+    public void push_p(Object o);
+
+    public Object pop_v() throws PilhaVaziaExcecao;
+
+    public Object pop_p() throws PilhaVaziaExcecao;
 
 }

@@ -12,11 +12,9 @@
  * Window - Preferences - Java - Code Style - Code Templates
  */
 
-import src.Pilha;
-
 public class testepilha {
 
-    public class PilhaArray implements Pilha {
+    public static class PilhaArray implements Pilha {
         private int capacity;
         private Object[] a;
         private int t_t;
@@ -26,143 +24,169 @@ public class testepilha {
         public PilhaArray(int capacity) {
             this.capacity = capacity;
             this.t_t = 0;
-            this.t_p = capacity;
+            this.t_p = this.capacity;
             this.t_v = -1;
-            this.a = new Object[capacity];
+            this.a = new Object[this.capacity];
         }
 
+        @Override
         public int size() {
-            return t_t;
+            return this.t_t;
         }
 
+        @Override
         public boolean isEmpty() {
-            return t_t == 0;
+            return this.t_t == 0;
         }
 
+        @Override
+        public boolean isEmpty_v() {
+            return this.t_v == -1;
+        }
+
+        @Override
+        public boolean isEmpty_p() {
+            return this.t_p == this.capacity;
+        }
+
+        @Override
         public Object top_v() throws PilhaVaziaExcecao {
             if (isEmpty()) {
                 throw new PilhaVaziaExcecao("A Pilha está vazia");
             }
-            if (t_v == -1){
+            if (isEmpty_v()){
                 throw new PilhaVaziaExcecao("Essa parte da pilha está vazia");
             }
-            return a[t_v];
+            return this.a[this.t_v];
         }
 
+        @Override
         public Object top_p() throws PilhaVaziaExcecao {
             if (isEmpty()) {
                 throw new PilhaVaziaExcecao("A Pilha está vazia");
             }
-            if (t_p == capacity){
+            if (isEmpty_p()){
                 throw new PilhaVaziaExcecao("Essa parte da pilha está vazia");
             }
-            return a[t_p];
+            return this.a[this.t_p];
         }
 
+        @Override
         public void push_v(Object o) {
-            if (t_p - t_v == 1) {
-                int old_capacity = capacity;
-                capacity *= 2;
-                Object b[] = new Pilha[capacity];
-                for (int i = 0; i < t_v + 1; ++i) {
-                    b[i] = a[i];
+            if (this.t_p - this.t_v == 1) {
+                int old_capacity = this.capacity;
+                this.capacity *= 2;
+                Object b[] = new Object[this.capacity];
+                for (int i = 0; i < this.t_v + 1; ++i) {
+                    b[i] = this.a[i];
                 }
-                t_p = t_p * 2 + (old_capacity - t_p);
-                for (int i = 1; old_capacity != t_p; ++i){
-                    b[old_capacity * 2 + i] = a[old_capacity - 1];
-                    --old_capacity;
+                int qtdDir = old_capacity - this.t_p;
+                int offset = this.capacity - qtdDir;
+                for (int i = 0; i < qtdDir; i++) {
+                    b[offset + i] = this.a[this.t_p + i];
                 }
-                a = b;
+                this.t_p = offset;
+                this.a = b;
             }
-            a[++t_v] = o;
-            ++t_t;
+            this.a[++this.t_v] = o;
+            ++this.t_t;
         }
 
+        @Override
         public void push_p(Object o) {
-            if (t_p - t_v == 1) {
-                int old_capacity = capacity;
-                capacity *= 2;
-                Object b[] = new Pilha[capacity];
-                for (int i = 0; i < t_v + 1; ++i) {
-                    b[i] = a[i];
+            if (this.t_p - this.t_v == 1) {
+                int old_capacity = this.capacity;
+                this.capacity *= 2;
+                Object b[] = new Object[this.capacity];
+                for (int i = 0; i < this.t_v + 1; ++i) {
+                    b[i] = this.a[i];
                 }
-                t_p = t_p * 2 + (old_capacity - t_p);
-                for (int i = 1; old_capacity != t_p; ++i){
-                    b[old_capacity * 2 + i] = a[old_capacity - 1];
-                    --old_capacity;
+                int qtdDir = old_capacity - this.t_p;
+                int offset = this.capacity - qtdDir;
+                for (int i = 0; i < qtdDir; i++) {
+                    b[offset + i] = this.a[this.t_p + i];
                 }
-                a = b;
+                this.t_p = offset;
+                this.a = b;
             }
-            a[--t_p] = o;
-            ++t_t;
+            this.a[--this.t_p] = o;
+            ++this.t_t;
         }
 
+        @Override
         public Object pop_v() throws PilhaVaziaExcecao {
             if (isEmpty()) {
                 throw new PilhaVaziaExcecao("A Pilha está vazia");
             }
-            if (t_v == -1){
+            if (isEmpty_v()){
                 throw new PilhaVaziaExcecao("Essa parte da pilha está vazia");
             }
-            int last_value = a[t_v];
-            --t_v;
-            --t_t;
-            if (t_t / capacity <= 1/3){
-                int old_capacity = capacity;
-                capacity /= 2;
-                int new_capacity = capacity;
-                Object b[] = new Pilha[capacity];
-                for(int i = 0; i < t_v + 1; ++i){
-                    b[i] = a[i];
+            Object last_value = this.a[this.t_v];
+            --this.t_v;
+            --this.t_t;
+            if (this.t_t * 1.0 / this.capacity <= 1.0 / 3){
+                int old_capacity = this.capacity;
+                this.capacity /= 2;
+                Object b[] = new Object[this.capacity];
+                for(int i = 0; i < this.t_v + 1; ++i){
+                    b[i] = this.a[i];
                 }
-                for(int i = old_capacity - 1; i >= t_p; --i){
-                    b[new_capacity - 1] = a[i];
-                    --new_capacity;
+                int qtdDir = old_capacity - this.t_p;
+                int offset = this.capacity - qtdDir;
+                for (int i = 0; i < qtdDir; i++) {
+                    b[offset + i] = this.a[this.t_p + i];
                 }
+                this.t_p = offset;
+                this.a = b;
             }
             return last_value;
         }
 
+        @Override
         public Object pop_p() throws PilhaVaziaExcecao {
             if (isEmpty()) {
                 throw new PilhaVaziaExcecao("A Pilha está vazia");
             }
-            if (t_p == capacity){
+            if (isEmpty_p()){
                 throw new PilhaVaziaExcecao("Essa parte da pilha está vazia");
             }
-            int last_value = a[t_p];
-            ++t_p;
-            --t_t;
-            if (t_t / capacity <= 1/3){
-                int old_capacity = capacity;
-                capacity /= 2;
-                int new_capacity = capacity;
-                Object b[] = new Pilha[capacity];
-                for(int i = 0; i < t_v + 1; ++i){
-                    b[i] = a[i];
+            Object last_value = this.a[this.t_p];
+            ++this.t_p;
+            --this.t_t;
+            if (this.t_t * 1.0 / this.capacity <= 1.0 / 3){
+                int old_capacity = this.capacity;
+                this.capacity /= 2;
+                Object b[] = new Object[this.capacity];
+                for(int i = 0; i < this.t_v + 1; ++i){
+                    b[i] = this.a[i];
                 }
-                for(int i = old_capacity - 1; i >= t_p; --i){
-                    b[new_capacity - 1] = a[i];
-                    --new_capacity;
+                int qtdDir = old_capacity - this.t_p;
+                int offset = this.capacity - qtdDir;
+                for (int i = 0; i < qtdDir; i++) {
+                    b[offset + i] = this.a[this.t_p + i];
                 }
+                this.t_p = offset;
+                this.a = b;
             }
             return last_value;
         }
     }
 
 
-	public static void main(String[] args) {		
-		Integer[] b = new Integer[1];		
+	public static void main(String[] args) {			
 		PilhaArray pp = new PilhaArray(1);
 		System.out.println("inserindo");
-		for(int f = 0; f < 10; f++){
+		for(int f = 0; f < 16; f++){
 		  System.out.println(f);		  
-		  pp.push(f);
+		  pp.push_v(f);
+          pp.push_p(f);
 		}
 		System.out.println("retirando");
-		for(int f = 0; f < 10; f++){
+		for(int f = 0; f < 16; f++){
 			  System.out.print(f);
-			  System.out.println(" - " + pp.pop());
+			  System.out.println(" - " + pp.pop_v());
+              System.err.print(f);
+              System.out.println(" . " + pp.pop_p());
 		}
 	}
 }
