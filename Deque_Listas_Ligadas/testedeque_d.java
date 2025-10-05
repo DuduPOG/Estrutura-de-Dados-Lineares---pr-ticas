@@ -1,20 +1,6 @@
-/*
- * Created on 01/09/2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
+public class testedeque_d {
 
-/**
- * @author Robinson
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
-
-public class testedeque {
-
-    public static class DequeLinked implements Deque {
+    public static class DequeLinked implements Deque_d {
         private No head;
         private No tail;
         private class No {
