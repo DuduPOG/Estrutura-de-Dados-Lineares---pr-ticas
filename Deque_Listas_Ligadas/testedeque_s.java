@@ -1,7 +1,8 @@
 public class testedeque_s {
-    public static class DequeLinked implements Deque_d {
+    public static class Deque_Simples_Ligacao implements Deque {
         private No head;
         private No tail;
+        private int size;
         private class No {
             Object value;
             No next;
@@ -11,16 +12,11 @@ public class testedeque_s {
                 this.next = null;
             }
         }
-        private int size;
-        private int t_f;
-        private int t_t;
 
-        public DequeLinked() {
+        public Deque_Simples_Ligacao() {
             this.head = null;
             this.tail = null;
             this.size = 0;
-            this.t_f = -1;
-            this.t_t = size;
         }
 
         @Override
@@ -35,7 +31,7 @@ public class testedeque_s {
 
 
         @Override
-        public Object top_f() throws DequeVazioExcecao {
+        public Object first() throws DequeVazioExcecao {
             if (isEmpty()) {
                 throw new DequeVazioExcecao("O Deque está vazio");
             }
@@ -43,7 +39,7 @@ public class testedeque_s {
         }
 
         @Override
-        public Object top_t() throws DequeVazioExcecao {
+        public Object last() throws DequeVazioExcecao {
             if (isEmpty()) {
                 throw new DequeVazioExcecao("O Deque está vazio");
             }
@@ -51,7 +47,7 @@ public class testedeque_s {
         }
 
         @Override
-        public void push_f(Object o) {
+        public void push_front(Object o) {
             No novo_no = new No();
             novo_no.next = this.head;
             novo_no.value = o;
@@ -59,12 +55,11 @@ public class testedeque_s {
                 this.tail = novo_no;
             }
             this.head = novo_no;
-            ++this.t_f;
             ++this.size;
         }
 
         @Override
-        public void push_t(Object o) {
+        public void push_back(Object o) {
             No novo_no = new No();
             novo_no.next = null;
             novo_no.value = o;
@@ -74,39 +69,49 @@ public class testedeque_s {
                 this.tail.next = novo_no;    
             }
             this.tail = novo_no;
-            --this.t_t;
             ++this.size;
         }
 
         @Override
-        public Object pop_f() throws DequeVazioExcecao {
+        public Object pop_front() throws DequeVazioExcecao {
             if (isEmpty()) {
                 throw new DequeVazioExcecao("O Deque está vazio");
             }
             Object to_remove = this.head.value;
-            this.head = this.head.next;
+            if (this.size() == 1){
+                this.head = null;
+                this.tail = null;
+                this.size = 0;
+            } else {
+                this.head = this.head.next;   
+            }
             --this.size;
-            --this.t_f;
             return to_remove;
             
         }
 
         @Override
-        public Object pop_t() throws DequeVazioExcecao {
+        public Object pop_back() throws DequeVazioExcecao {
             if (isEmpty()) {
                 throw new DequeVazioExcecao("O Deque está vazio");
             }
             Object to_remove = this.tail.value;
-            No to_delete = this.head;
-            while (to_delete.next != this.tail){
-                to_delete = to_delete.next;
+            if (this.size() == 1){
+                this.head = null;
+                this.tail = null;
+                this.size = 0;
+            } else {
+                No to_delete = this.head;
+                while (to_delete.next != this.tail){
+                    to_delete = to_delete.next;
+                }
+                to_delete.next = null;
+                this.tail = to_delete;
             }
-            to_delete.next = null;
-            this.tail = to_delete;
-            ++this.t_t;
             --this.size;
             return to_remove;
         }
+
     }
 
 
