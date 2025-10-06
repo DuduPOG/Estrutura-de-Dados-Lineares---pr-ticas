@@ -1,3 +1,6 @@
+import java.time.Duration;
+import java.time.Instant;
+
 public class testedeque_d {
 
     public static class Deque_Dupla_Ligacao implements Deque {
@@ -116,21 +119,22 @@ public class testedeque_d {
         }
     }
 
-
-	public static void main(String[] args) {			
-		PilhaArray pp = new PilhaArray(1);
+	public static void main(String[] args) {
+        Instant inicio = Instant.now();
+        Deque_Dupla_Ligacao pp = new Deque_Dupla_Ligacao();
 		System.out.println("inserindo");
-		for(int f = 0; f < 16; f++){
-		  System.out.println(f);		  
-		  pp.push_v(f);
-          pp.push_p(f);
+		for(int f = 0; f < 32768; f++){		  
+		  pp.push_front(f);
+          pp.push_back(f);
 		}
 		System.out.println("retirando");
-		for(int f = 0; f < 16; f++){
-			  System.out.print(f);
-			  System.out.println(" - " + pp.pop_v());
-              System.err.print(f);
-              System.out.println(" . " + pp.pop_p());
+		for(int f = 0; f < 32768; f++){
+            pp.pop_front();
+            pp.pop_back();
 		}
+        Instant fim = Instant.now();
+        Duration tempoDecorrido = Duration.between(inicio, fim);
+        long tempo = tempoDecorrido.toMillis();
+        System.out.println("Tempo decorrido: " + tempo + " milissegundos");
 	}
 }
