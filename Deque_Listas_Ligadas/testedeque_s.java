@@ -11,7 +11,7 @@ public class testedeque_s {
             No next;
 
             public No() {
-                this.value = 0;
+                this.value = null;
                 this.next = null;
             }
         }
@@ -81,16 +81,15 @@ public class testedeque_s {
                 throw new DequeVazioExcecao("O Deque está vazio");
             }
             Object to_remove = this.head.value;
-            if (this.size() == 1){
+            if (this.tail == this.head){
                 this.head = null;
                 this.tail = null;
                 this.size = 0;
             } else {
-                this.head = this.head.next;   
+                this.head = this.head.next;
+                --this.size;
             }
-            --this.size;
             return to_remove;
-            
         }
 
         @Override
@@ -99,7 +98,7 @@ public class testedeque_s {
                 throw new DequeVazioExcecao("O Deque está vazio");
             }
             Object to_remove = this.tail.value;
-            if (this.size() == 1){
+            if (this.tail == this.head){
                 this.head = null;
                 this.tail = null;
                 this.size = 0;
@@ -110,8 +109,8 @@ public class testedeque_s {
                 }
                 to_delete.next = null;
                 this.tail = to_delete;
+                --this.size;
             }
-            --this.size;
             return to_remove;
         }
 

@@ -13,7 +13,7 @@ public class testedeque_d {
             No prev;
 
             public No() {
-                this.value = 0;
+                this.value = null;
                 this.next = null;
                 this.prev = null;
             }
@@ -87,15 +87,15 @@ public class testedeque_d {
                 throw new DequeVazioExcecao("O Deque está vazio");
             }
             Object to_remove = this.head.value;
-            if (this.size() == 1){
+            if (this.tail == this.head){
                 this.head = null;
                 this.tail = null;
                 this.size = 0;
             } else {
                 this.head.next.prev = null;
                 this.head = this.head.next;
+                --this.size;
             }
-            --this.size;
             return to_remove;
         }
 
@@ -105,16 +105,15 @@ public class testedeque_d {
                 throw new DequeVazioExcecao("O Deque está vazio");
             }
             Object to_remove = this.tail.value;
-            
-            if (this.size() == 1){
+            if (this.tail == this.head){
                 this.head = null;
                 this.tail = null;
                 this.size = 0;
             } else {
                 this.tail.prev.next = null;
                 this.tail = this.tail.prev;
+                --this.size;
             }
-            --this.size;
             return to_remove;
         }
     }
