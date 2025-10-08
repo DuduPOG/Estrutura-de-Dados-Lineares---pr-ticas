@@ -81,7 +81,7 @@ public class testedeque_s {
                 throw new DequeVazioExcecao("O Deque está vazio");
             }
             Object to_remove = this.head.value;
-            if (this.tail == this.head){
+            if (this.size == 1){
                 this.head = null;
                 this.tail = null;
                 this.size = 0;
@@ -98,7 +98,7 @@ public class testedeque_s {
                 throw new DequeVazioExcecao("O Deque está vazio");
             }
             Object to_remove = this.tail.value;
-            if (this.tail == this.head){
+            if (this.size == 1){
                 this.head = null;
                 this.tail = null;
                 this.size = 0;
