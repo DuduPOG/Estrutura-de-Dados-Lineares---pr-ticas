@@ -1,29 +1,29 @@
 public class testeFila {
     public static class FilaArray implements Fila {
-        private int size;
-        private int capacity;
+        private int tamanho;
+        private int capacidade;
         private int primeiro;
         private int finalFila;
-        private Object a[];
+        private Object[] a;
 
-        public FilaArray(int capacity) {
-            this.size = 0;
-            this.capacity = capacity;
+        public FilaArray(int capacidade) {
+            this.tamanho = 0;
+            this.capacidade = capacidade;
             this.primeiro = 0;
             this.finalFila = this.primeiro + 1;
-            this.a = new Object[capacity];
+            this.a = new Object[capacidade];
         }
 
         public int tamanho(){
-            return this.size;
+            return this.tamanho;
         }
 
         public boolean estaVazia(){
-            return this.size == 0;
+            return this.tamanho == 0;
         }
 
         public boolean estaCheia(){
-            return this.size - 1 == this.capacity;
+            return this.tamanho + 1 == this.capacidade;
         }
 
         public Object inicio() throws EFilaVazia {
@@ -35,16 +35,28 @@ public class testeFila {
 
         public void enfileirar(Object o){
             if (estaCheia()){
-                FilaArray b = new FilaArray(this.capacity *= 2);
-                
+                this.capacidade *= 2;
+                FilaArray b = new FilaArray(this.capacidade);
+                for (int i = 0; i < this.tamanho; ++i){
+                    b[i] = this.a[(this.primeiro + i) % this.tamanho];
+                }
+                this.primeiro = 0;
+                ++this.tamanho;
+                this.finalFila = (this.finalFila + 1) % this.tamanho;
             }
+            this.a[this.tamanho] = o;
+            ++this.tamanho;
+            this.finalFila = (this.finalFila + 1) % this.tamanho;
         }
 
         public Object desenfileirar() throws EFilaVazia {
             if (estaVazia()){
                 throw new EFilaVazia("A fila está vazia");
             }
-            return this.a[this.primeiro--];
+            Object saindo = this.a[this.primeiro];
+            this.primeiro = (this.primeiro + 1) % this.tamanho;
+            --this.tamanho;
+            return saindo;
         }
     }
 
