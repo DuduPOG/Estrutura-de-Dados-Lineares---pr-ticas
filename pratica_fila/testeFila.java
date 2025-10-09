@@ -11,21 +11,25 @@ public class testeFila {
             this.capacidade = capacidade;
             this.primeiro = 0;
             this.finalFila = this.primeiro + 1;
-            this.a = new Object[capacidade];
+            this.a = new Object[this.capacidade];
         }
 
+        @Override
         public int tamanho(){
             return this.tamanho;
         }
-
+        
+        @Override
         public boolean estaVazia(){
-            return this.tamanho == 0;
+            return this.primeiro == this.finalFila;
         }
 
+        @Override
         public boolean estaCheia(){
-            return this.tamanho + 1 == this.capacidade;
+            return this.primeiro + 1 == this.finalFila;
         }
 
+        @Override
         public Object inicio() throws EFilaVazia {
             if (estaVazia()) {
                 throw new EFilaVazia("A fila está vazia");
@@ -33,28 +37,34 @@ public class testeFila {
             return this.a[this.primeiro];
         }
 
+        @Override
         public void enfileirar(Object o){
             if (estaCheia()){
+                int antiga_capacidade = this.capacidade;
                 this.capacidade *= 2;
-                FilaArray b = new FilaArray(this.capacidade);
+                Object[] b = new Object[this.capacidade];
                 for (int i = 0; i < this.tamanho; ++i){
-                    b[i] = this.a[(this.primeiro + i) % this.tamanho];
+                    int ii = (this.primeiro + i) % antiga_capacidade;
+                    b[i] = this.a[ii];
                 }
+                this.a = b;
                 this.primeiro = 0;
-                ++this.tamanho;
-                this.finalFila = (this.finalFila + 1) % this.tamanho;
-            }
-            this.a[this.tamanho] = o;
+                this.a[this.finalFila] = o;
+                this.finalFila = ++this.tamanho;
+            } else {
+            this.a[this.finalFila] = o;
             ++this.tamanho;
-            this.finalFila = (this.finalFila + 1) % this.tamanho;
+            this.finalFila = (this.finalFila + 1) % this.capacidade;
+            }
         }
 
+        @Override
         public Object desenfileirar() throws EFilaVazia {
             if (estaVazia()){
                 throw new EFilaVazia("A fila está vazia");
             }
             Object saindo = this.a[this.primeiro];
-            this.primeiro = (this.primeiro + 1) % this.tamanho;
+            this.primeiro = (this.primeiro + 1) % this.capacidade;
             --this.tamanho;
             return saindo;
         }
